@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adaptive Chess Trainer — Predict 100 Endings</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>♞ Adaptive Chess Trainer</h1>
+    <p class="tagline">It starts dumb. It learns your mind. It makes you a prediction machine.</p>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: board -->
+    <section class="board-pane">
+      <div class="board-frame">
+        <div id="board" class="board" aria-label="chess board"></div>
+        <div id="promotion" class="promotion hidden"></div>
+      </div>
+      <div class="board-controls">
+        <button id="newGame" class="btn">New Game</button>
+        <button id="undo" class="btn">Undo</button>
+        <button id="flip" class="btn">Flip</button>
+        <button id="hint" class="btn btn-accent">Hint</button>
+        <label class="toggle">
+          <input type="checkbox" id="visionToggle" checked /> Vision trainer
+        </label>
+      </div>
+      <div id="status" class="status">Your move. White to play.</div>
+    </section>
+
+    <!-- RIGHT: coaching panels -->
+    <aside class="side-pane">
+      <div class="card opponent-card">
+        <div class="card-head">
+          <h2>Opponent</h2>
+          <span id="levelBadge" class="badge">Beginner Bot</span>
+        </div>
+        <div class="strength-meter"><div id="strengthFill" class="strength-fill"></div></div>
+        <p id="insight" class="insight">Play a few moves and I will start reading your style…</p>
+      </div>
+
+      <div class="card move-feedback" id="feedbackCard">
+        <div class="card-head"><h2>Move Coach</h2><span id="gradeBadge" class="grade"></span></div>
+        <p id="feedbackText" class="feedback-text">Make a move and I will show you what flawless looked like.</p>
+        <div id="bestLine" class="best-line"></div>
+      </div>
+
+      <div class="card vision-card">
+        <div class="card-head"><h2>Vision — possible futures</h2></div>
+        <p class="hint-text">The engine's top continuations from this position. Train your eye to see them <em>before</em> you move.</p>
+        <ul id="visionList" class="vision-list"></ul>
+      </div>
+
+      <div class="card stats-card">
+        <div class="card-head"><h2>Your Profile</h2><button id="resetProfile" class="btn btn-small">Reset</button></div>
+        <div class="stats-grid">
+          <div><span class="stat-num" id="statAcc">100%</span><span class="stat-label">avg accuracy</span></div>
+          <div><span class="stat-num" id="statGames">0</span><span class="stat-label">games</span></div>
+          <div><span class="stat-num" id="statRecord">0-0-0</span><span class="stat-label">W-L-D</span></div>
+          <div><span class="stat-num" id="statStreak">0</span><span class="stat-label">best streak</span></div>
+          <div><span class="stat-num" id="statBlunders">0</span><span class="stat-label">blunders</span></div>
+          <div><span class="stat-num" id="statBrilliant">0</span><span class="stat-label">best moves</span></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span>Runs entirely in your browser. No accounts, no servers — your progress saves locally.</span>
+  </footer>
+
+  <script src="js/chess.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/adaptive.js"></script>
+  <script src="js/coach.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
