@@ -168,4 +168,4 @@
   };
 
   global.Adaptive = Adaptive;
-})(typeof window !== 'undefined' ? window : this);
+})(typeof self !== 'undefined' ? self : this);

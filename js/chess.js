@@ -541,4 +541,4 @@
   Chess.sq = sq;
 
   global.Chess = Chess;
-})(typeof window !== 'undefined' ? window : this);
+})(typeof self !== 'undefined' ? self : this);

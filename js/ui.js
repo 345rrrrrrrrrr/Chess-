@@ -436,4 +436,4 @@
   };
 
   global.UI = UI;
-})(typeof window !== 'undefined' ? window : this);
+})(typeof self !== 'undefined' ? self : this);

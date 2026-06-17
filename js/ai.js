@@ -173,11 +173,12 @@
     var moves = orderMoves(chess, chess.moves());
     var scored = [];
     var alpha = -Infinity, beta = Infinity;
+    var withSan = options.sans !== false;
     for (var i = 0; i < moves.length; i++) {
       chess.makeMove(moves[i]);
       var score = -negamax(chess, depth - 1, -beta, -alpha, -sideSign, deadline);
       chess.undoMove();
-      scored.push({ move: moves[i], score: score, san: chess.toSan(moves[i]) });
+      scored.push({ move: moves[i], score: score, san: withSan ? chess.toSan(moves[i]) : null });
     }
     scored.sort(function (a, b) { return b.score - a.score; });
 
@@ -206,4 +207,4 @@
     VALUES: VALUES,
     MATE: MATE
   };
-})(typeof window !== 'undefined' ? window : this);
+})(typeof self !== 'undefined' ? self : this);

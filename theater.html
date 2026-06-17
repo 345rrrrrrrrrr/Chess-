@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vision Theater — Watch Hundreds of Games</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>🎞️ Vision Theater</h1>
+    <p class="tagline">Hundreds of different games, playing out slowly. Watch them. Tap one to study it — or predict every move in your mind.</p>
+    <a class="back-link" href="index.html">← back to the trainer</a>
+  </header>
+
+  <div class="theater-controls">
+    <button id="playPause" class="btn btn-accent">⏸ Pause</button>
+    <button id="newBatch" class="btn">🔀 New batch</button>
+    <label class="ctl">Boards
+      <select id="boardCount">
+        <option value="6">6</option>
+        <option value="12" selected>12</option>
+        <option value="20">20</option>
+      </select>
+    </label>
+    <label class="ctl">Speed
+      <input type="range" id="speed" min="300" max="2600" step="100" value="1300" />
+      <span id="speedLabel">1.3s/move</span>
+    </label>
+    <span class="engine-mode">engine: <b id="engineMode">…</b></span>
+  </div>
+
+  <main class="grid" id="grid"></main>
+
+  <p class="theater-hint">
+    Each board is a unique game the engine is playing against itself. They never repeat — when one ends, a brand new game takes its place. Tap any board to open it full-size, step through it, and turn on <b>🧠 Predict</b> to guess each move before it's revealed.
+  </p>
+
+  <!-- Focus / study modal -->
+  <div id="focusModal" class="focus-modal hidden">
+    <div class="focus-inner">
+      <div class="focus-left">
+        <div class="focus-board-wrap"><div id="focusBoard" class="focus-board"></div></div>
+        <div class="focus-buttons">
+          <button id="focusStart" class="btn btn-small">⏮ Start</button>
+          <button id="focusPrev" class="btn btn-small">◀ Prev</button>
+          <button id="focusNext" class="btn btn-small">Next ▶</button>
+          <button id="predictToggle" class="btn btn-small">🧠 Predict: off</button>
+          <button id="focusClose" class="btn btn-small">✕ Close</button>
+        </div>
+      </div>
+      <div class="focus-right">
+        <h2>Study this game</h2>
+        <p id="focusStatus" class="focus-status"></p>
+        <div id="focusMoves" class="focus-moves"></div>
+        <p id="predScore" class="pred-score"></p>
+        <p class="focus-tip">In <b>Predict</b> mode: click the piece you think moves, then its destination, then press <b>Next ▶</b> to reveal. Train your mind to see it first.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/chess.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/theater.js"></script>
+</body>
+</html>

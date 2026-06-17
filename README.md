@@ -50,6 +50,21 @@ playing the opponent that helps you improve the most _right now_.
 | **Hint** | Draws an arrow to the best move when you're stuck — but try to see _why_ first. |
 | **Profile** | Tracks accuracy, win/loss record, best-move streak, blunders and brilliancies. Persists across sessions. |
 
+## 🎞️ Vision Theater
+
+A separate mode (`theater.html`, linked from the top of the trainer) that plays
+**many different games at once**, slowly and endlessly — your "watch hundreds of
+endings" idea made real.
+
+- A grid of boards, each a unique engine-vs-engine game (diversified with
+  randomized openings + temperature sampling, so none repeat). When a game
+  ends, a brand-new one takes its place.
+- Games are generated in **Web Workers** (background threads) so the page stays
+  smooth; it falls back to main-thread generation where workers aren't allowed.
+- Tap any board to open it full-size, step through it move by move, and switch
+  on **🧠 Predict** mode: guess each move before it's revealed and get scored —
+  training you to *see it first* and "play the game in your mind".
+
 ## Project structure
 
 ```
