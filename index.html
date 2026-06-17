@@ -28,6 +28,20 @@
           <input type="checkbox" id="visionToggle" checked /> Vision trainer
         </label>
       </div>
+
+      <div class="plan-controls">
+        <button id="drawToggle" class="btn">✏️ Draw</button>
+        <button id="threats" class="btn">⚠️ Threats</button>
+        <button id="clearAnno" class="btn">Clear marks</button>
+        <span class="swatches" id="swatches" aria-label="annotation colours">
+          <button class="swatch selected" data-color="#e8a13a" style="background:#e8a13a" title="orange"></button>
+          <button class="swatch" data-color="#5fbf7d" style="background:#5fbf7d" title="green"></button>
+          <button class="swatch" data-color="#e0625e" style="background:#e0625e" title="red"></button>
+          <button class="swatch" data-color="#4f9dde" style="background:#4f9dde" title="blue"></button>
+        </span>
+      </div>
+      <p id="planHint" class="plan-hint">Tip: tap <b>Draw</b>, then drag on the board to draw an arrow, or tap a square to highlight it. On a computer you can also right-click-drag.</p>
+
       <div id="status" class="status">Your move. White to play.</div>
     </section>
 

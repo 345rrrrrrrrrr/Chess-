@@ -130,6 +130,27 @@ body {
 .btn-accent:hover { background: #7fd3b2; }
 .btn-small { padding: 4px 10px; font-size: 12px; }
 
+/* Planning / annotation controls */
+.plan-controls {
+  display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+  align-items: center; justify-content: center;
+}
+.btn.active { background: var(--accent); color: #0c1410; border-color: transparent; font-weight: 600; }
+.swatches { display: inline-flex; gap: 6px; align-items: center; margin-left: 4px; }
+.swatch {
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  border: 2px solid #2f3a48; padding: 0;
+}
+.swatch.selected { border-color: #fff; transform: scale(1.12); }
+.plan-hint {
+  margin: 8px auto 0; max-width: 520px; text-align: center;
+  color: var(--muted); font-size: 12px; line-height: 1.5;
+}
+.anno-layer { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.anno-preview { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.board.draw-mode { cursor: crosshair; touch-action: none; }
+.board.draw-mode .square { cursor: crosshair; }
+
 .status {
   margin-top: 12px; font-size: 15px; color: var(--light);
   min-height: 22px; text-align: center;

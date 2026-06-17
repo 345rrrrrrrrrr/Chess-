@@ -162,6 +162,43 @@
     return false;
   };
 
+  // List the squares of all `bySide` pieces that attack `target` (0x88).
+  // Used by the "Threats" helper to show what can capture a piece.
+  Chess.prototype.attackersOf = function (bySide, target) {
+    var res = [];
+    for (var i = 0; i < 128; i++) {
+      if (i & 0x88) { i += 7; continue; }
+      var p = this.board[i];
+      if (!p || colorOf(p) !== bySide) continue;
+      var t = typeOf(p);
+      if (t === 'p') {
+        var dir = bySide === WHITE ? 16 : -16;
+        var fwd = i + dir;
+        var l = fwd - 1, r = fwd + 1;
+        if (onBoard(l) && l === target && rank(l) === rank(fwd)) res.push(i);
+        if (onBoard(r) && r === target && rank(r) === rank(fwd)) res.push(i);
+        continue;
+      }
+      if (t === 'n' || t === 'k') {
+        var offs = OFFSETS[t];
+        for (var k = 0; k < offs.length; k++) {
+          if (i + offs[k] === target) { res.push(i); break; }
+        }
+        continue;
+      }
+      var so = OFFSETS[t];
+      for (var d = 0; d < so.length; d++) {
+        var to = i + so[d];
+        while (onBoard(to)) {
+          if (to === target) { res.push(i); break; }
+          if (this.board[to]) break;
+          to += so[d];
+        }
+      }
+    }
+    return res;
+  };
+
   Chess.prototype.inCheck = function (side) {
     side = side || this.turn;
     var kingSq = this.kings[side];

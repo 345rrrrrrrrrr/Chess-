@@ -25,6 +25,7 @@
   var game, adaptive, coach, ui;
   var thinking = false;
   var lastAnalysis = null;   // analysis of the position the player currently faces
+  var threatsOn = false;     // is the threat overlay currently shown?
 
   function el(id) { return document.getElementById(id); }
 
@@ -81,6 +82,7 @@
       // Apply the player's move.
       game.makeMove(move);
       ui.clearHint();
+      clearMarks();
       render({ from: fromAlg, to: toAlg });
 
       // Feed the adaptive brain and refresh coaching panels.
@@ -104,6 +106,7 @@
     var mv = result.chosen.move;
     var fromAlg = Chess.algebraic(mv.from), toAlg = Chess.algebraic(mv.to);
     game.makeMove(mv);
+    clearMarks();
     render({ from: fromAlg, to: toAlg });
 
     if (checkGameOver()) { setThinking(false); return; }
@@ -227,12 +230,45 @@
     el('statBrilliant').textContent = p.brilliant;
   }
 
+  // Wipe planning marks (used whenever the position changes).
+  function clearMarks() {
+    threatsOn = false;
+    var t = el('threats'); if (t) t.classList.remove('active');
+    ui.clearAnnotations();
+  }
+
+  // Highlight every player piece under attack and draw arrows from each
+  // attacker — "what can eat my stuff".
+  function showThreats() {
+    ui.clearAnnotations();
+    var RED = '#e0625e';
+    var them = PLAYER === Chess.WHITE ? Chess.BLACK : Chess.WHITE;
+    var count = 0;
+    for (var i = 0; i < 128; i++) {
+      if (i & 0x88) { i += 7; continue; }
+      var p = game.board[i];
+      if (!p || Chess.colorOf(p) !== PLAYER) continue;
+      var attackers = game.attackersOf(them, i);
+      if (attackers.length) {
+        count++;
+        ui.markSquare(Chess.algebraic(i), RED);
+        attackers.forEach(function (a) {
+          ui.markArrow(Chess.algebraic(a), Chess.algebraic(i), RED);
+        });
+      }
+    }
+    ui.redrawAnnotations();
+    if (count === 0) setStatus('No pieces under attack right now — you are safe. Look for YOUR captures instead.');
+    else setStatus(count + ' of your piece(s) can be captured. Red arrows show the attackers — are they defended?');
+  }
+
   function wireControls() {
     el('newGame').addEventListener('click', function () {
       game = new Chess();
       lastAnalysis = null;
       ui.clearHint();
       ui.clearSelection();
+      clearMarks();
       setThinking(false);
       refreshAll();
       setStatus('New game. White to play — that is you.');
@@ -248,6 +284,7 @@
       lastAnalysis = null;
       ui.clearHint();
       ui.clearSelection();
+      clearMarks();
       var lm = game.history.length
         ? lastMoveFromHistory()
         : null;
@@ -280,6 +317,38 @@
         updateProfileUI();
         setStatus('Profile reset. Back to Beginner Bot.');
       }
+    });
+
+    // --- planning / annotation controls ---
+    el('drawToggle').addEventListener('click', function () {
+      var on = !ui.drawMode;
+      ui.setDrawMode(on);
+      el('drawToggle').classList.toggle('active', on);
+      if (on) setStatus('Draw mode ON — drag to draw arrows, tap a square to highlight. Tap Draw again to play.');
+      else setStatus('Draw mode off. Your move.');
+    });
+
+    el('threats').addEventListener('click', function () {
+      if (thinking) return;
+      threatsOn = !threatsOn;
+      el('threats').classList.toggle('active', threatsOn);
+      if (threatsOn) showThreats();
+      else ui.clearAnnotations();
+    });
+
+    el('clearAnno').addEventListener('click', function () {
+      threatsOn = false;
+      el('threats').classList.remove('active');
+      ui.clearAnnotations();
+    });
+
+    el('swatches').addEventListener('click', function (e) {
+      var btn = e.target.closest('.swatch');
+      if (!btn) return;
+      ui.setDrawColor(btn.dataset.color);
+      el('swatches').querySelectorAll('.swatch').forEach(function (s) { s.classList.remove('selected'); });
+      btn.classList.add('selected');
+      if (!ui.drawMode) { ui.setDrawMode(true); el('drawToggle').classList.add('active'); }
     });
   }
 
